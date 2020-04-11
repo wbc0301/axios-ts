@@ -27,13 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const router = express.Router()
 
 registerSimpleRouter()
-
 registerBaseRouter()
-
 registerErrorRouter()
-
 registerExtendRouter()
-
 registerInterceptorRouter()
 
 app.use(router)

@@ -7,7 +7,7 @@ import axios from '../../src/index'
 //     foo: ['bar', 'baz']
 //   }
 // })
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get',
@@ -17,9 +17,9 @@ import axios from '../../src/index'
 //     }
 //   }
 // })
-//
+
 // const date = new Date()
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get',
@@ -27,15 +27,15 @@ import axios from '../../src/index'
 //     date
 //   }
 // })
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get',
 //   params: {
-//     foo: '@:$, '
+//     foo: '@:$, ' // 有空格
 //   }
 // })
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get',
@@ -44,7 +44,7 @@ import axios from '../../src/index'
 //     baz: null
 //   }
 // })
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get#hash',
@@ -52,7 +52,7 @@ import axios from '../../src/index'
 //     foo: 'bar'
 //   }
 // })
-//
+
 // axios({
 //   method: 'get',
 //   url: '/base/get?foo=bar',
@@ -60,7 +60,7 @@ import axios from '../../src/index'
 //     bar: 'baz'
 //   }
 // })
-//
+
 // axios({
 //   method: 'post',
 //   url: '/base/post',
@@ -69,7 +69,7 @@ import axios from '../../src/index'
 //     b: 2
 //   }
 // })
-//
+
 // axios({
 //   method: 'post',
 //   url: '/base/post',
@@ -81,19 +81,19 @@ import axios from '../../src/index'
 //     b: 2
 //   }
 // })
-//
+
 // const arr = new Int32Array([21, 31])
-//
+
 // axios({
 //   method: 'post',
 //   url: '/base/buffer',
 //   data: arr
 // })
-//
-//
+
+
 // const paramsString = 'q=URLUtils.searchParams&topic=api'
 // const searchParams = new URLSearchParams(paramsString)
-//
+
 // axios({
 //   method: 'post',
 //   url: '/base/post',
