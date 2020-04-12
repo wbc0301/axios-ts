@@ -12,7 +12,7 @@ function encode(val: string): string {
 }
 
 export function buildURL(url: string, params?: any): string {
-  if (!params) { // 无参数
+  if (!params) { // 无params参数
     return url
   }
 
@@ -20,9 +20,7 @@ export function buildURL(url: string, params?: any): string {
 
   Object.keys(params).forEach(key => {
     const val = params[key]
-    if (val === null || typeof val === 'undefined') {
-      return
-    }
+    if (val === null || typeof val === 'undefined') return;
     let valueList = []
     if (Array.isArray(val)) {  // params: {foo: ['bar', 'baz']}
       valueList = val
@@ -47,9 +45,8 @@ export function buildURL(url: string, params?: any): string {
     if (markIndex !== -1) {
       url = url.slice(0, markIndex)     //   /base/get
     }
-
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
   }
 
-  return url
+  return url;
 }

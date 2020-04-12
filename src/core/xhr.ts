@@ -1,80 +1,44 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
-import { parseHeaders } from '../helpers/headers'
-import { createError } from '../helpers/error'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
+import { parseHeaders } from '../helpers/headers';
+import { createError } from '../helpers/error';
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout } = config;
+    const xhr = new XMLHttpRequest(); //【1】：创建 xhr
+    if (responseType) { xhr.responseType = responseType }
+    if (timeout) { xhr.timeout = timeout }
+    xhr.open(method.toUpperCase(), url!, true) //【2】：open
 
-    const request = new XMLHttpRequest()
-
-    if (responseType) {
-      request.responseType = responseType
-    }
-
-    if (timeout) {
-      request.timeout = timeout
-    }
-
-    request.open(method.toUpperCase(), url!, true)
-
-    request.onreadystatechange = function handleLoad() {
-      if (request.readyState !== 4) {
-        return
-      }
-
-      if (request.status === 0) {
-        return
-      }
-
-      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-      const responseData =
-        responseType && responseType !== 'text' ? request.response : request.responseText
-      const response: AxiosResponse = {
-        data: responseData,
-        status: request.status,
-        statusText: request.statusText,
-        headers: responseHeaders,
-        config,
-        request
-      }
-      handleResponse(response)
-    }
-
-    request.onerror = function handleError() {
-      reject(createError('Network Error', config, null, request))
-    }
-
-    request.ontimeout = function handleTimeout() {
-      reject(
-        createError(`Timeout of ${config.timeout} ms exceeded`, config, 'ECONNABORTED', request)
-      )
-    }
-
-    Object.keys(headers).forEach(name => {
+    Object.keys(headers).forEach(name => { // 添加 Content-Type  
       if (data === null && name.toLowerCase() === 'content-type') {
-        delete headers[name]
+        delete headers[name]; // 没有data删除Content-Type
       } else {
-        request.setRequestHeader(name, headers[name])
+        xhr.setRequestHeader(name, headers[name]); // 设置header必须在 open send 之间
       }
     })
 
-    request.send(data)
+    xhr.send(data); //【3】：发送请求
 
-    function handleResponse(response: AxiosResponse): void {
+    xhr.onreadystatechange = function handleLoad() { //【4】： 监听readystatechange
+      if (xhr.readyState !== 4) return;
+      if (xhr.status === 0) return;
+      const responseHeaders = parseHeaders(xhr.getAllResponseHeaders());
+      const responseData = responseType && responseType !== 'text' ? xhr.response : xhr.responseText;
+      const response: AxiosResponse = { data: responseData, status: xhr.status, statusText: xhr.statusText, headers: responseHeaders, config, request: xhr };
       if (response.status >= 200 && response.status < 300) {
-        resolve(response)
+        resolve(response);
       } else {
-        reject(
-          createError(
-            `Request failed with status code ${response.status}`,
-            config,
-            null,
-            request,
-            response
-          )
-        )
+        reject(createError(`Request failed with status code ${response.status}`, config, null, xhr, response));
       }
+    }
+
+    xhr.onerror = function handleError() { //【4】：监听error
+      reject(createError('Network Error', config, null, xhr));
+    }
+
+    xhr.ontimeout = function handleTimeout() { //【4】：监听timeout
+      reject(createError(`Timeout of ${config.timeout} ms exceeded`, config, 'ECONNABORTED', xhr));
     }
   })
 }
