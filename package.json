@@ -1,18 +1,18 @@
 {
-  "name": "axios-ts",
+  "name": "axios-ts-wbc",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/axios-ts.umd.js",
-  "module": "dist/axios-ts.es5.js",
-  "typings": "dist/types/axios-ts.d.ts",
+  "main": "dist/axios.umd.js",
+  "module": "dist/axios.es5.js",
+  "typings": "dist/types/axioswbc.d.ts",
   "files": [
     "dist"
   ],
   "author": "wbc <417780894@qq.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/wbc0301/axios-ts"
   },
   "license": "MIT",
   "engines": {
@@ -33,7 +33,9 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "prepub": "npm run test:prod && npm run build",
+    "pub": "sh release.sh"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
